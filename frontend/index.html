@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Travel Agency Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial;
+      background: #f2f2f2;
+      padding: 10px;
+    }
+    .chatbox {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+    }
+    .msg {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chatbox">
+  <h3>Travel Agency Chatbot</h3>
+  <div id="chat"></div>
+  <input id="message" placeholder="Ask about travel..." />
+  <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+async function sendMessage() {
+  const msg = document.getElementById("message").value;
+  const chat = document.getElementById("chat");
+
+  chat.innerHTML += `<div class="msg"><b>You:</b> ${msg}</div>`;
+
+  const res = await fetch("http://localhost:5000/chat", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ message: msg })
+  });
+
+  const data = await res.json();
+  chat.innerHTML += `<div class="msg"><b>Bot:</b> ${data.reply}</div>`;
+}
+</script>
+
+</body>
+</html>
